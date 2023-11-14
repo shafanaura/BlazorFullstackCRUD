@@ -1,0 +1,59 @@
+﻿@page "/"
+@inject ISuperHeroService SuperHeroService
+@inject NavigationManager NavigationManager
+
+
+<button @onclick=CreateNewHero
+    class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+    Create hero
+</button>
+
+<table class="min-w-full divide-y divide-gray-300">
+    <thead>
+        <tr>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">First Name</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Last Name</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Hero Name</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Comic</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hero in SuperHeroService.Heroes)
+        {
+            <tr>
+                <td class="px-3 py-4 text-sm text-gray-500">@hero.FirstName</td>
+                <td class="px-3 py-4 text-sm text-gray-500">@hero.LastName</td>
+                <td class="px-3 py-4 text-sm text-gray-500">@hero.HeroName</td>
+                <td class="px-3 py-4 text-sm text-gray-500">@hero.Comic?.Name</td>
+                <td class="py-4 px-3 text-sm font-medium flex gap-3">
+                    <button @onclick="(() => ShowHero(hero.Id))" class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                    <button @onclick="(() => DeleteHero(hero.Id))" class="text-red-600 hover:text-red-900">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await SuperHeroService.GetSuperHeroes();
+    }
+
+    void ShowHero(int id)
+    {
+        NavigationManager.NavigateTo($"/edit/{id}");
+    }
+
+    void CreateNewHero()
+    {
+        NavigationManager.NavigateTo("/create");
+    }
+
+    async Task DeleteHero(int id)
+    {
+        await SuperHeroService.DeleteHero(id);
+    }
+}

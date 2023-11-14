@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "2H6TJwohf6h1ZfouDHEXWD0aInRtZbSPtfmU04RCQyjKnZ9cURwcULrCLhdq/XIE0NjogG8C35x/+f004uwZ9Q==",
+  "success": true,
+  "projectFilePath": "C:\\code\\BlazorFullstackCRUD\\BlazorFullstackCRUD\\Shared\\BlazorFullstackCRUD.Shared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\shafa\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.23\\microsoft.windowsdesktop.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\shafa\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.23\\microsoft.netcore.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\shafa\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.23\\microsoft.aspnetcore.app.ref.6.0.23.nupkg.sha512"
+  ],
+  "logs": []
+}

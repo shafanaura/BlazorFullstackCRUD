@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.3.5"
+  },
+  "scripts": {
+    "buildcss": "postcss wwwroot/css/app.css -o wwwroot/css/app.min.css",
+    "watchcss": "npx tailwindcss -i .\\wwwroot\\css\\app.css -o .\\wwwroot\\css\\app.min.css --watch"
+  }
+}

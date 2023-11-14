@@ -1,0 +1,92 @@
+@page "/create"
+@page "/edit/{id:int}"
+@inject ISuperHeroService SuperHeroService
+@inject NavigationManager NavigationManager
+
+@if (Id == null)
+{
+    <p class="font-semibold">Create a new Super Hero</p>
+}
+else
+{
+    <p class="font-semibold">Edit @hero.HeroName</p>
+}
+
+<EditForm Model="hero" OnSubmit="HandleSubmit">
+    <div class="flex flex-col gap-1">
+        <label for="firstname">First Name</label>
+        <InputText id="firstname" @bind-Value=hero.FirstName
+            class="w-36 rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm" />
+    </div>
+    <div class="flex flex-col gap-1">
+        <label for="lastname">Last Name</label>
+        <InputText id="lastname" @bind-Value=hero.LastName
+            class="w-36 rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm" />
+    </div>
+    <div class="flex flex-col gap-1">
+        <label for="heroname">Hero Name</label>
+        <InputText id="heroname" @bind-Value=hero.HeroName Name
+            class="w-36 rounded-md border-0 py-1.5 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-sm" />
+    </div>
+    <div class="flex flex-col gap-1">
+        <label for="comic">Comic</label>
+        <InputSelect id="comicid" @bind-Value=hero.ComicId
+            class="w-36 rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 text-sm">
+            @foreach (var comic in SuperHeroService.Comics)
+            {
+                <option value="@comic.Id">@comic.Name</option>
+            }
+        </InputSelect>
+    </div>
+    <button type="submit"
+        class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">@btnText</button>
+    <button type="button" @onclick=DeleteHero class="rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-red-500 focus-visible:outline
+    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">Delete
+        hero</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+
+    string btnText = string.Empty;
+
+    SuperHero hero = new SuperHero { Comic = new Comic() };
+
+    protected override async Task OnInitializedAsync()
+    {
+        btnText = Id == null ? "Save" : "Update";
+        await SuperHeroService.GetComics();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id == null)
+        {
+            hero.Comic = SuperHeroService.Comics[0];
+            hero.ComicId = hero.ComicId;
+        }
+        else
+        {
+            hero = await SuperHeroService.GetSingleHero((int)Id);
+        }
+    }
+
+    async Task HandleSubmit()
+    {
+        if (Id == null)
+        {
+            await SuperHeroService.CreateHero(hero);
+        }
+        else
+        {
+            await SuperHeroService.UpdateHero(hero);
+        }
+    }
+
+    async Task DeleteHero()
+    {
+        await SuperHeroService.DeleteHero(hero.Id);
+        NavigationManager.NavigateTo("/");
+    }
+}
